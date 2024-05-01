@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 // This is the rest API controller for interacting with Wrestlers
 
@@ -57,16 +59,16 @@ public class WrestlersController {
     }
 
     @PostMapping("/add-wrestler")
-    public Wrestlers create(@RequestBody java.util.Map<String, String> body){
+    public ResponseEntity<Wrestlers> create(@RequestBody java.util.Map<String, String> body){
 
         String name = body.get("name");
-        String moniker = body.get("monkiker");
+        String moniker = body.get("moniker");
         String location = body.get("location");
         String weight = body.get("weight");
         String notes = body.get("notes");
         Wrestlers newWrestler = new Wrestlers(name, moniker, location, weight, notes);
-
-        return wrestlersService.save(newWrestler);
+        wrestlersService.save(newWrestler);
+        return new ResponseEntity<Wrestlers>(newWrestler, HttpStatus.CREATED);
 
     }
 }
