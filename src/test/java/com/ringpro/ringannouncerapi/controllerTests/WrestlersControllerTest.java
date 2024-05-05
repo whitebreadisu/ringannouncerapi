@@ -1,4 +1,4 @@
-package com.ringpro.ringannouncerapi.wrestlers;
+package com.ringpro.ringannouncerapi.controllerTests;
 
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;

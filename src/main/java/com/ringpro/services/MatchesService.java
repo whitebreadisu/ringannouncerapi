@@ -1,9 +1,20 @@
 package com.ringpro.services;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.ringpro.models.Matches;
+import com.ringpro.repositories.MatchesRepository;
 
-public interface MatchesService extends JpaRepository<Matches, Integer>{
+@Service
+public class MatchesService {
     
+    @Autowired
+    MatchesRepository matchesRepository;
+
+    public List<Matches> getAllMatches() {
+        return matchesRepository.findAll();
+    }
 }
