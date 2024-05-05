@@ -1,11 +1,15 @@
-package com.ringpro.ringannouncerapi.wrestlers;
+package com.ringpro.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository; 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.ringpro.models.Wrestlers; 
 
 // this class is used for connecting the sql DB to interact with an instance of the Wrestlers model class
 // the 'extends' statement informs the class of its databaseness, allowing us to interact
 // with an instance of this class to do database things like create/modify/delete wrestler records
 
-public interface WrestlersService extends JpaRepository<Wrestlers, Integer>{
+@Repository
+public interface WrestlersRepository extends JpaRepository<Wrestlers, Integer>{
     
 }

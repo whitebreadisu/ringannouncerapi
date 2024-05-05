@@ -1,4 +1,4 @@
-package com.ringpro.ringannouncerapi.matches;
+package com.ringpro.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

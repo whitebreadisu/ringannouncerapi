@@ -1,0 +1,11 @@
+
+Finish Wrestlers tests
+- search by ID and do not find
+- update no ID found
+
+Create an actual service class...
+- watch some spring boot service layer tutorials
+- rename WrestlersService -> WrestlersRepository
+- create WrestlersService
+
+Create all Matches tests

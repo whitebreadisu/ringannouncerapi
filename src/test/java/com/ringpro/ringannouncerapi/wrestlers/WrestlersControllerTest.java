@@ -1,5 +1,6 @@
 package com.ringpro.ringannouncerapi.wrestlers;
 
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -9,7 +10,6 @@ import static org.hamcrest.Matchers.is;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ringpro.controllers.WrestlersController;
+import com.ringpro.models.Wrestlers;
+import com.ringpro.services.WrestlersService;
 
 @WebMvcTest(WrestlersController.class)
 public class WrestlersControllerTest {
@@ -32,18 +35,37 @@ public class WrestlersControllerTest {
 
     @Test
     void shouldReturnListOfWrestlers() throws Exception {
-        List<Wrestlers> wrestlers = new ArrayList<>(
+        List<Wrestlers> wrestlersList = new ArrayList<>(
             Arrays.asList(
                 new Wrestlers(1, "Test Wrestler 1", "Test Moniker 1", "Test Location 1", "1 lbs test", "test notes for wrestler 1"),
                 new Wrestlers(2, "Test Wrestler 2", "Test Moniker 2", "Test Location 2", "2 lbs test", "test notes for wrestler 2"),
                 new Wrestlers(3, "Test Wrestler 3", "Test Moniker 3", "Test Location 3", "3 lbs test", "test notes for wrestler 3"))
         );
 
-        when(wrestlersService.findAll()).thenReturn(wrestlers);
+        List<Wrestlers> wrestlersServiceResponse = wrestlersList;
+
+        when(wrestlersService.getAllWrestlers()).thenReturn(wrestlersServiceResponse);
         mockMvc.perform(get("/get-all-wrestlers"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.size()").value(wrestlers.size()))
+            .andExpect(jsonPath("$.size()").value(wrestlersList.size()))
             .andExpect(jsonPath("$[1].name", is("Test Wrestler 2")))
+            .andDo(print());
+    }
+
+    @Test
+    void shouldReturnSingleWrestler() throws Exception {
+        int id = 1;
+        Wrestlers wrestlers = new Wrestlers(id, "GET Wrestler 1", "GET Moniker 1", "GET Location 1", "1 lbs GET", "GET notes for wrestler 1");
+
+        when(wrestlersService.getWrestler(id)).thenReturn(wrestlers);
+        mockMvc.perform(get("/get-wrestler/{id}",id))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").value(id))
+            .andExpect(jsonPath("$.name").value(wrestlers.getName()))
+            .andExpect(jsonPath("$.moniker").value(wrestlers.getMoniker()))
+            .andExpect(jsonPath("$.location").value(wrestlers.getLocation()))
+            .andExpect(jsonPath("$.weight").value(wrestlers.getWeight()))
+            .andExpect(jsonPath("$.notes").value(wrestlers.getNotes()))
             .andDo(print());
     }
 
@@ -58,14 +80,28 @@ public class WrestlersControllerTest {
     }
 
     @Test
-    void shouldReturnWrestler() throws Exception {
-        int id = 1;
-        Wrestlers wrestlers = new Wrestlers(id, "GET Wrestler 1", "GET Moniker 1", "GET Location 1", "1 lbs GET", "GET notes for wrestler 1");
+    void shouldRemoveWrestler() throws Exception {
+        int id = 0;
+        doNothing().when(wrestlersService).removeWrestler(id);
+        mockMvc.perform(delete("/remove-wrestler/{id}", id))
+            .andExpect(status().isNoContent())
+            .andDo(print());
+    }
 
-        when(wrestlersService.findById(id)).thenReturn(Optional.of(wrestlers));
-        mockMvc.perform(get("/get-wrestler/{id}",id))
+/*
+    @Test
+    void shouldUpdateWrestler() throws Exception {
+        Integer id = 1;
+        Wrestlers wrestlers = new Wrestlers(id,"Test Wrestler 1", "Test Moniker 1", "Test Location 1", "1 lbs test", "test notes for wrestler 1");
+        Wrestlers updatedWrestlers = new Wrestlers(id, "updated", "updated", "updated", "updated","updated");
+      
+        
+        when(wrestlersService.updateWrestlers(id, wrestlers.toString()).thenReturn(wrestlers));
+        
+        mockMvc.perform(put("/update-wrestler/{id}", id)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(updatedWrestlers)))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.id").value(id))
             .andExpect(jsonPath("$.name").value(wrestlers.getName()))
             .andExpect(jsonPath("$.moniker").value(wrestlers.getMoniker()))
             .andExpect(jsonPath("$.location").value(wrestlers.getLocation()))
@@ -73,5 +109,6 @@ public class WrestlersControllerTest {
             .andExpect(jsonPath("$.notes").value(wrestlers.getNotes()))
             .andDo(print());
     }
-
+*/
+ 
 }
