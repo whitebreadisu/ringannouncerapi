@@ -1,6 +1,7 @@
 package com.ringpro.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -60,7 +61,7 @@ public class WrestlersController {
 
     @PutMapping("/update-wrestler/{id}")
     public ResponseEntity<Wrestlers> updateWrestlers(@PathVariable("id") Integer id, 
-                                     @RequestBody java.util.Map<String, String> body){
+                                     @RequestBody Map<String, String> body){
                                         
         return new ResponseEntity<Wrestlers>(wrestlersService.updateWrestlers(id, body), HttpStatus.OK);
     }

@@ -30,6 +30,15 @@ public class Matches {
     public Matches() {
     }
 
+    public Matches(int id, int wrestlerID_1, int wrestlerID_2, String matchtype, String timelimit, String fallrule) {
+        this.id = id;
+        this.wrestlerID_1 = wrestlerID_1;
+        this.wrestlerID_2 = wrestlerID_2;
+        this.matchtype = matchtype;
+        this.timelimit = timelimit;
+        this.fallrule = fallrule;
+    }
+
     public Matches(int wrestlerID_1, int wrestlerID_2, String matchtype, String timelimit, String fallrule) {
         this.wrestlerID_1 = wrestlerID_1;
         this.wrestlerID_2 = wrestlerID_2;

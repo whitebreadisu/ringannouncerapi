@@ -4,6 +4,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -19,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,21 +57,16 @@ public class MatchesControllerTest {
             .andExpect(jsonPath("$[1].matchtype", is("type2")))
             .andDo(print());
     }
-    
-//****************************
-// Matches constructor does not include id for match record...
-// need to update Matches.java with constructor that includeds id...
-// and then include the commented line below in the test
-//****************************
+
     @Test
     void shouldReturnSingleMatch() throws Exception {
         Integer id = 1;
-        Matches matches = new Matches(1, 2, "type1", "timelimit1", "fallrule1");
+        Matches matches = new Matches(id,1, 2, "type1", "timelimit1", "fallrule1");
 
         when(matchesService.getMatches(id)).thenReturn(matches);
         mockMvc.perform(get("/get-match/{id}", id))
             .andExpect(status().isOk())
-//          .andExpect(jsonPath("$.id").value(id))
+            .andExpect(jsonPath("$.id").value(id))
             .andExpect(jsonPath("$.wrestlerID_1").value(matches.getWrestlerID_1()))
             .andExpect(jsonPath("$.wrestlerID_2").value(matches.getWrestlerID_2()))
             .andExpect(jsonPath("$.matchtype").value(matches.getMatchtype()))
@@ -78,4 +75,47 @@ public class MatchesControllerTest {
             .andDo(print());
 
     }
+
+    @Test
+    void shouldRemoveMatch() throws Exception {
+        int id = 0;
+        doNothing().when(matchesService).removeMatch(id);
+        mockMvc.perform(delete("/remove-match/{id}", id))
+            .andExpect(status().isNoContent())
+            .andDo(print());
+    }
+
+    @Test
+    void shouldCreateMatch() throws Exception {
+        Matches matches = new Matches(1, 2, "POST type1", "POST timelimit1", "POST fallrule1");
+
+        mockMvc.perform(post("/add-match").contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(matches)))
+        .andExpect(status().isCreated())
+        .andDo(print());
+    }
+
+ /*
+    @Test
+    void shouldUpdateMatches() throws Exception {
+        Integer id = 1;
+        Matches matches = new Matches(1,1, 2, "type1", "timelimit1", "fallrule1");
+        Matches updatedMatches = new Matches(1,3, 4, "updated", "updated", "updated");
+        
+        when(matchesService.updateMatches(id, body).thenReturn(matches));
+
+        mockMvc.perform(put("/update-match/{id}", id)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(updatedMatches)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").value(id))
+            .andExpect(jsonPath("$.wrestlerID_1").value(matches.getWrestlerID_1()))
+            .andExpect(jsonPath("$.wrestlerID_2").value(matches.getWrestlerID_2()))
+            .andExpect(jsonPath("$.matchtype").value(matches.getMatchtype()))
+            .andExpect(jsonPath("$.fallrule").value(matches.getFallrule()))
+            .andExpect(jsonPath("$.timelimit").value(matches.getTimelimit()))
+            .andDo(print());
+    
+    }
+ */   
 }
