@@ -1,0 +1,23 @@
+select a.matchID, b.wrestler_name, " vs. ", c.wrestler_name, " in a ", a.matchtype, 
+	" match scheduled for ", a.timelimit, " or ", a.fallrule
+from ringpro.tbl_matches a
+left join ringpro.tbl_wrestlers b
+on a.wrestlerID_1 = b.wrestlerID
+left join ringpro.tbl_wrestlers c
+on a.wrestlerID_2 = c.wrestlerID
+
+INSERT INTO ringpro.tbl_matches(wrestlerID_1, wrestlerID_2, matchtype, timelimit, fallrule)
+VALUES (1, 4, "Singles", "15 min", "1 fall"),
+	   (5, 6, "3XW Championship", "60 min", "1 fall"),
+	   (7, 8, "Singles", "30 min", "1 fall")
+
+INSERT INTO ringpro.tbl_wrestlers(wrestler_name, wrestler_moniker, wrestler_location, wrestler_weight)
+VALUES ("Fuego Del Sol", "Master of the tonado DDT", "Mobile, AL", "185 lbs"),
+       ("Ethan Page", "All Ego", "Hamilton Ontario Canada", "225 lbs"),
+       ("Moonshine Mantel", "", "The great state of Texas", "240 lbs"),
+       ("Brixton Nash", "Silverback", "Omaha, NE", "230 lbs"),
+       ("Kenny Alfonso", "2nd to none", "Kansas City, MO", "181 lbs")
+
+select * from ringpro.tbl_wrestlers
+
+select * from ringpro.tbl_matches

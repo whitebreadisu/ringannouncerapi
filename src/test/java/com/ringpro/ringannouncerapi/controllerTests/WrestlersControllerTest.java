@@ -88,7 +88,7 @@ public class WrestlersControllerTest {
             .andDo(print());
     }
 
-/*
+/* 
     @Test
     void shouldUpdateWrestler() throws Exception {
         Integer id = 1;
@@ -96,7 +96,7 @@ public class WrestlersControllerTest {
         Wrestlers updatedWrestlers = new Wrestlers(id, "updated", "updated", "updated", "updated","updated");
       
         
-        when(wrestlersService.updateWrestlers(id, wrestlers.toString()).thenReturn(wrestlers));
+        when(wrestlersService.updateWrestlers(id, body).thenReturn(wrestlers));
         
         mockMvc.perform(put("/update-wrestler/{id}", id)
             .contentType(MediaType.APPLICATION_JSON)

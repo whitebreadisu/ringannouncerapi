@@ -22,6 +22,7 @@ public class WrestlersService {
     public List<Wrestlers> getAllWrestlers() 
     {
         return wrestlersRepository.findAll();
+    
     }
     
     // Get single wrestler by id

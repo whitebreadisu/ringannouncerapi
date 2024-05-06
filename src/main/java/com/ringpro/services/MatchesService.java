@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ringpro.models.Matches;
 import com.ringpro.repositories.MatchesRepository;
@@ -16,5 +17,9 @@ public class MatchesService {
 
     public List<Matches> getAllMatches() {
         return matchesRepository.findAll();
+    }
+
+    public Matches getMatches(@RequestParam(required = true) Integer id) {
+        return matchesRepository.findById(id).get();
     }
 }

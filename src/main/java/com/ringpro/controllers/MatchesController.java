@@ -31,12 +31,12 @@ public class MatchesController {
         List<Matches> matchesList = matchesService.getAllMatches();
         return new ResponseEntity<List<Matches>>(matchesList, HttpStatus.OK);
     }
-/*
+ 
     @GetMapping("/get-match/{id}")
-    public Matches getSingleMatch(@PathVariable("id") Integer id){
-        return matchesService.findById(id).get();
+    public ResponseEntity<Matches> getSingleMatch(@PathVariable("id") Integer id){
+        return new ResponseEntity<>(matchesService.getMatches(id), HttpStatus.OK);
     }
-
+/*
     @DeleteMapping("/remove-match/{id}")
     public boolean deleteRow(@PathVariable("id") Integer id){
         if(!matchesService.findById(id).equals(Optional.empty())){

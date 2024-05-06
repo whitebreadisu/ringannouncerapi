@@ -55,4 +55,27 @@ public class MatchesControllerTest {
             .andExpect(jsonPath("$[1].matchtype", is("type2")))
             .andDo(print());
     }
+    
+//****************************
+// Matches constructor does not include id for match record...
+// need to update Matches.java with constructor that includeds id...
+// and then include the commented line below in the test
+//****************************
+    @Test
+    void shouldReturnSingleMatch() throws Exception {
+        Integer id = 1;
+        Matches matches = new Matches(1, 2, "type1", "timelimit1", "fallrule1");
+
+        when(matchesService.getMatches(id)).thenReturn(matches);
+        mockMvc.perform(get("/get-match/{id}", id))
+            .andExpect(status().isOk())
+//          .andExpect(jsonPath("$.id").value(id))
+            .andExpect(jsonPath("$.wrestlerID_1").value(matches.getWrestlerID_1()))
+            .andExpect(jsonPath("$.wrestlerID_2").value(matches.getWrestlerID_2()))
+            .andExpect(jsonPath("$.matchtype").value(matches.getMatchtype()))
+            .andExpect(jsonPath("$.fallrule").value(matches.getFallrule()))
+            .andExpect(jsonPath("$.timelimit").value(matches.getTimelimit()))
+            .andDo(print());
+
+    }
 }
