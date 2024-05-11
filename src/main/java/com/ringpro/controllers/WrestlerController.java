@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ringpro.models.Wrestlers;
-import com.ringpro.services.WrestlersService;
+import com.ringpro.models.Wrestler;
+import com.ringpro.services.WrestlerService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-// This is the rest API controller for interacting with WrestlersService
+// This is the rest API controller for interacting with wrestlerService
 
 @RestController
-public class WrestlersController {
+public class WrestlerController {
        
-    // this creates an instance of the WrestlersService class that will connect to the SQL DB
+    // this creates an instance of the wrestlerService class that will connect to the SQL DB
     // and is then used by the controller
     // @Autowired does something super cool???? 
 
@@ -31,28 +31,28 @@ public class WrestlersController {
 
 
     @Autowired 
-    WrestlersService wrestlersService;
+    WrestlerService wrestlerService;
 
-    @GetMapping("/get-all-wrestlers")
-    public ResponseEntity<List<Wrestlers>> allWrestlers() {
-        List<Wrestlers> wrestlerList = wrestlersService.getAllWrestlers();      
-        return new ResponseEntity<List<Wrestlers>>(wrestlerList, HttpStatus.OK);
+    @GetMapping("/get-all-wrestler")
+    public ResponseEntity<List<Wrestler>> allwrestler() {
+        List<Wrestler> wrestlerList = wrestlerService.getAllwrestler();      
+        return new ResponseEntity<List<Wrestler>>(wrestlerList, HttpStatus.OK);
     }
 
     @GetMapping("/get-wrestler/{id}")
-    public ResponseEntity<Wrestlers> getSingleWrestlers(@PathVariable("id") Integer id){       
-        return new ResponseEntity<Wrestlers>(wrestlersService.getWrestler(id), HttpStatus.OK);
+    public ResponseEntity<Wrestler> getSinglewrestler(@PathVariable("id") Integer id){       
+        return new ResponseEntity<Wrestler>(wrestlerService.getWrestler(id), HttpStatus.OK);
     }
 
     @PostMapping("/add-wrestler")
-    public ResponseEntity<Wrestlers> add(@RequestBody java.util.Map<String, String> body){
-        return new ResponseEntity<Wrestlers>(wrestlersService.addWrestler(body), HttpStatus.CREATED);
+    public ResponseEntity<Wrestler> add(@RequestBody java.util.Map<String, String> body){
+        return new ResponseEntity<Wrestler>(wrestlerService.addWrestler(body), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/remove-wrestler/{id}")
     public ResponseEntity<HttpStatus> removeWrestler(@PathVariable("id") Integer id) {
         try {
-            wrestlersService.removeWrestler(id);
+            wrestlerService.removeWrestler(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -60,9 +60,9 @@ public class WrestlersController {
     }
 
     @PutMapping("/update-wrestler/{id}")
-    public ResponseEntity<Wrestlers> updateWrestlers(@PathVariable("id") Integer id, 
+    public ResponseEntity<Wrestler> updatewrestler(@PathVariable("id") Integer id, 
                                      @RequestBody Map<String, String> body){
                                         
-        return new ResponseEntity<Wrestlers>(wrestlersService.updateWrestlers(id, body), HttpStatus.OK);
+        return new ResponseEntity<Wrestler>(wrestlerService.updatewrestler(id, body), HttpStatus.OK);
     }
 }

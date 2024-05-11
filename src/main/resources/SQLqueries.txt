@@ -21,3 +21,23 @@ VALUES ("Fuego Del Sol", "Master of the tonado DDT", "Mobile, AL", "185 lbs"),
 select * from ringpro.tbl_wrestlers
 
 select * from ringpro.tbl_matches
+
+
+CREATE TABLE `ringpro`.`tbl_wrestler_team_match` (
+  `tbl_wrestler_team_match_ID` INT GENERATED ALWAYS AS () VIRTUAL,
+  `wrestlerID` INT NOT NULL,
+  `matchID` INT NOT NULL,
+  `teamID` INT NULL,
+  PRIMARY KEY (`tbl_wrestler_team_match_ID`),
+  UNIQUE INDEX `matchID_UNIQUE` (`matchID` ASC) VISIBLE,
+  UNIQUE INDEX `wrestlerID_UNIQUE` (`wrestlerID` ASC) VISIBLE,
+  CONSTRAINT `fk_wrestlerID`
+    FOREIGN KEY (`wrestlerID`)
+    REFERENCES `ringpro`.`tbl_wrestlers` (`wrestlerID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_matchID`
+    FOREIGN KEY (`matchID`)
+    REFERENCES `ringpro`.`tbl_matches` (`matchID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);

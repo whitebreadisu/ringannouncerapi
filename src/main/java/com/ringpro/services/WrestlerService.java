@@ -9,37 +9,37 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ringpro.models.Wrestlers;
-import com.ringpro.repositories.WrestlersRepository;
+import com.ringpro.models.Wrestler;
+import com.ringpro.repositories.WrestlerRepository;
 
 @Service
-public class WrestlersService {
+public class WrestlerService {
     
     @Autowired
-    WrestlersRepository wrestlersRepository;
+    WrestlerRepository wrestlerRepository;
     
-    // Get ALL Wrestlers
-    public List<Wrestlers> getAllWrestlers() 
+    // Get ALL wrestler
+    public List<Wrestler> getAllwrestler() 
     {
-        return wrestlersRepository.findAll();
+        return wrestlerRepository.findAll();
     
     }
     
     // Get single wrestler by id
-     public Wrestlers getWrestler(@RequestParam(required = true) Integer id) {
-            return wrestlersRepository.findById(id).get();
+     public Wrestler getWrestler(@RequestParam(required = true) Integer id) {
+            return wrestlerRepository.findById(id).get();
     }
 
     // Add a single wrestler
-    public Wrestlers addWrestler(@RequestBody Map<String, String> body){
+    public Wrestler addWrestler(@RequestBody Map<String, String> body){
 
         String name = body.get("name");
         String moniker = body.get("moniker");
         String location = body.get("location");
         String weight = body.get("weight");
         String notes = body.get("notes");
-        Wrestlers newWrestler = new Wrestlers(name, moniker, location, weight, notes);
-        wrestlersRepository.save(newWrestler);
+        Wrestler newWrestler = new Wrestler(name, moniker, location, weight, notes);
+        wrestlerRepository.save(newWrestler);
         return newWrestler;
 
     }
@@ -49,18 +49,18 @@ public class WrestlersService {
     // what about deleting a wrestler that is FK constraint to matches?
     //   Probably need to think about this as a 'deactivate' flag of some sort, or if its even needed
     public void removeWrestler(Integer id) {
-              wrestlersRepository.deleteById(id);
+              wrestlerRepository.deleteById(id);
     }
 
-    public Wrestlers updateWrestlers(Integer id, @RequestBody Map<String, String> body) {
+    public Wrestler updatewrestler(Integer id, @RequestBody Map<String, String> body) {
 
-        Wrestlers wrestlerToUpdate = wrestlersRepository.findById(id).get();
+        Wrestler wrestlerToUpdate = wrestlerRepository.findById(id).get();
         wrestlerToUpdate.setName(body.get("name"));
         wrestlerToUpdate.setMoniker(body.get("moniker"));
         wrestlerToUpdate.setLocation(body.get("location"));
         wrestlerToUpdate.setWeight(body.get("weight"));
         wrestlerToUpdate.setNotes(body.get("notes"));
-        wrestlersRepository.save(wrestlerToUpdate);
+        wrestlerRepository.save(wrestlerToUpdate);
         return wrestlerToUpdate;
     }
 }

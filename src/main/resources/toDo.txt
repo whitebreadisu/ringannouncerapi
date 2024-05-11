@@ -1,11 +1,31 @@
 
-Finish Wrestlers tests
-- search by ID and do not find
-- update no ID found
+tests
+- fix update tests
+- tests for service layer? - YES!  Are they actually calling db and getting something back?
+- error handling for conditions like 'id not found', or can't delete wrestler b/c FK to matches
 
-Create an actual service class...
-- watch some spring boot service layer tutorials
-- rename WrestlersService -> WrestlersRepository
-- create WrestlersService
+#1a cleanup
+- normalize language (example... is it create?  or add?  remove or delete?)
+- match language between tests and controllers
+- models... should it be plural or singular?  Wrestlers or Wrestler?
 
-Create all Matches tests
+functions
+- add shows
+- deactivate vs delete wrestlers... determine functionality
+- tag matches and other match types
+- a front end at some point?
+
+learn
+- tdd (use shows creation?  Or something more interesting?)
+- containers
+- returning matches with wrestler names... in service layer?  SQL view?  Presentation/React?
+
+
+#1c models
+- matches... revisit this.  Instead of using an int for wrestler... use the whole wrestler object!  Consider List<Wresters>
+parent/child spring boot db entity objects
+
+#1b teams
+- create team model + teams controller(or should it be part of match creation?... 
+     annotation in matchesController to create team, but NOT creation wrestler)
+

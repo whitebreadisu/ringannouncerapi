@@ -4,12 +4,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.hamcrest.Matchers.is;
 
 import java.util.ArrayList;
@@ -24,14 +20,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ringpro.controllers.MatchesController;
-import com.ringpro.models.Matches;
-import com.ringpro.services.MatchesService;
+import com.ringpro.controllers.MatchController;
+import com.ringpro.models.Match;
+import com.ringpro.services.MatchService;
 
-@WebMvcTest(MatchesController.class)
-public class MatchesControllerTest {
+@WebMvcTest(MatchController.class)
+public class MatchControllerTest {
     @MockBean
-    private MatchesService matchesService;
+    private MatchService matchesService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -41,14 +37,14 @@ public class MatchesControllerTest {
 
     @Test
     void shouldReturnListOfMatches() throws Exception {
-        List<Matches> matchesList = new ArrayList<>(
+        List<Match> matchesList = new ArrayList<>(
             Arrays.asList (
-                new Matches(1, 2, "type1", "timelimit1", "fallrule1"),
-                new Matches(5, 3, "type2", "timelimit2", "fallrule2"),
-                new Matches(2, 4, "type3", "timelimit3", "fallrule3"))
+                new Match("type1", "timelimit1", "fallrule1"),
+                new Match("type2", "timelimit2", "fallrule2"),
+                new Match("type3", "timelimit3", "fallrule3"))
         );
 
-        List<Matches> matchesServiceResponse = matchesList;
+        List<Match> matchesServiceResponse = matchesList;
 
         when(matchesService.getAllMatches()).thenReturn(matchesServiceResponse);
         mockMvc.perform(get("/get-all-matches"))
@@ -61,19 +57,27 @@ public class MatchesControllerTest {
     @Test
     void shouldReturnSingleMatch() throws Exception {
         Integer id = 1;
-        Matches matches = new Matches(id,1, 2, "type1", "timelimit1", "fallrule1");
+        Match matches = new Match(id,"type1", "timelimit1", "fallrule1");
 
         when(matchesService.getMatches(id)).thenReturn(matches);
         mockMvc.perform(get("/get-match/{id}", id))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id").value(id))
-            .andExpect(jsonPath("$.wrestlerID_1").value(matches.getWrestlerID_1()))
-            .andExpect(jsonPath("$.wrestlerID_2").value(matches.getWrestlerID_2()))
             .andExpect(jsonPath("$.matchtype").value(matches.getMatchtype()))
             .andExpect(jsonPath("$.fallrule").value(matches.getFallrule()))
             .andExpect(jsonPath("$.timelimit").value(matches.getTimelimit()))
             .andDo(print());
 
+    }
+
+    @Test
+    void shouldCreateMatch() throws Exception {
+        Match matches = new Match("POST type1", "POST timelimit1", "POST fallrule1");
+
+        mockMvc.perform(post("/add-match").contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(matches)))
+        .andExpect(status().isCreated())
+        .andDo(print());
     }
 
     @Test
@@ -83,16 +87,6 @@ public class MatchesControllerTest {
         mockMvc.perform(delete("/remove-match/{id}", id))
             .andExpect(status().isNoContent())
             .andDo(print());
-    }
-
-    @Test
-    void shouldCreateMatch() throws Exception {
-        Matches matches = new Matches(1, 2, "POST type1", "POST timelimit1", "POST fallrule1");
-
-        mockMvc.perform(post("/add-match").contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(matches)))
-        .andExpect(status().isCreated())
-        .andDo(print());
     }
 
  /*

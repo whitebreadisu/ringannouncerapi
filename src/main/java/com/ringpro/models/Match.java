@@ -9,17 +9,13 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tbl_matches")
-public class Matches {
+public class Match {
     
     @Id
     @Column(name = "matchID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "wrestlerID_1")
-    private int wrestlerID_1;
-    @Column(name = "wrestlerID_2")
-    private int wrestlerID_2;
     @Column(name = "matchtype")
     private String matchtype;
     @Column(name = "timelimit")
@@ -27,21 +23,17 @@ public class Matches {
     @Column(name = "fallrule")
     private String fallrule;
     
-    public Matches() {
+    public Match() {
     }
 
-    public Matches(int id, int wrestlerID_1, int wrestlerID_2, String matchtype, String timelimit, String fallrule) {
+    public Match(int id, String matchtype, String timelimit, String fallrule) {
         this.id = id;
-        this.wrestlerID_1 = wrestlerID_1;
-        this.wrestlerID_2 = wrestlerID_2;
         this.matchtype = matchtype;
         this.timelimit = timelimit;
         this.fallrule = fallrule;
     }
 
-    public Matches(int wrestlerID_1, int wrestlerID_2, String matchtype, String timelimit, String fallrule) {
-        this.wrestlerID_1 = wrestlerID_1;
-        this.wrestlerID_2 = wrestlerID_2;
+    public Match(String matchtype, String timelimit, String fallrule) {
         this.matchtype = matchtype;
         this.timelimit = timelimit;
         this.fallrule = fallrule;
@@ -49,14 +41,6 @@ public class Matches {
 
     public int getId() {
         return id;
-    }
-
-    public int getWrestlerID_1() {
-        return wrestlerID_1;
-    }
-
-    public int getWrestlerID_2() {
-        return wrestlerID_2;
     }
 
     public String getMatchtype() {
@@ -69,14 +53,6 @@ public class Matches {
 
     public String getFallrule() {
         return fallrule;
-    }
-
-    public void setWrestlerID_1(int wrestlerID_1) {
-        this.wrestlerID_1 = wrestlerID_1;
-    }
-
-    public void setWrestlerID_2(int wrestlerID_2) {
-        this.wrestlerID_2 = wrestlerID_2;
     }
 
     public void setMatchtype(String matchtype) {
@@ -93,8 +69,7 @@ public class Matches {
 
     @Override
     public String toString() {
-        return "Matches [id=" + id + ", wrestlerID_1=" + wrestlerID_1 + ", wrestlerID_2=" + wrestlerID_2
-                + ", matchtype=" + matchtype + ", timelimit=" + timelimit + ", fallrule=" + fallrule + "]";
+        return "Match [id=" + id + ", matchtype=" + matchtype + ", timelimit=" + timelimit + ", fallrule=" + fallrule + "]";
     }
 
 
