@@ -27,7 +27,7 @@ import com.ringpro.services.MatchService;
 @WebMvcTest(MatchController.class)
 public class MatchControllerTest {
     @MockBean
-    private MatchService matchesService;
+    private MatchService matchService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -37,19 +37,19 @@ public class MatchControllerTest {
 
     @Test
     void shouldReturnListOfMatches() throws Exception {
-        List<Match> matchesList = new ArrayList<>(
+        List<Match> matchList = new ArrayList<>(
             Arrays.asList (
                 new Match("type1", "timelimit1", "fallrule1"),
                 new Match("type2", "timelimit2", "fallrule2"),
                 new Match("type3", "timelimit3", "fallrule3"))
         );
 
-        List<Match> matchesServiceResponse = matchesList;
+        List<Match> matchServiceResponse = matchList;
 
-        when(matchesService.getAllMatches()).thenReturn(matchesServiceResponse);
+        when(matchService.getAllMatches()).thenReturn(matchServiceResponse);
         mockMvc.perform(get("/get-all-matches"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.size()").value(matchesList.size()))
+            .andExpect(jsonPath("$.size()").value(matchList.size()))
             .andExpect(jsonPath("$[1].matchtype", is("type2")))
             .andDo(print());
     }
@@ -57,15 +57,15 @@ public class MatchControllerTest {
     @Test
     void shouldReturnSingleMatch() throws Exception {
         Integer id = 1;
-        Match matches = new Match(id,"type1", "timelimit1", "fallrule1");
+        Match match = new Match(id,"type1", "timelimit1", "fallrule1");
 
-        when(matchesService.getMatches(id)).thenReturn(matches);
+        when(matchService.getMatch(id)).thenReturn(match);
         mockMvc.perform(get("/get-match/{id}", id))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id").value(id))
-            .andExpect(jsonPath("$.matchtype").value(matches.getMatchtype()))
-            .andExpect(jsonPath("$.fallrule").value(matches.getFallrule()))
-            .andExpect(jsonPath("$.timelimit").value(matches.getTimelimit()))
+            .andExpect(jsonPath("$.matchtype").value(match.getMatchtype()))
+            .andExpect(jsonPath("$.fallrule").value(match.getFallrule()))
+            .andExpect(jsonPath("$.timelimit").value(match.getTimelimit()))
             .andDo(print());
 
     }
@@ -82,8 +82,8 @@ public class MatchControllerTest {
 
     @Test
     void shouldRemoveMatch() throws Exception {
-        int id = 0;
-        doNothing().when(matchesService).removeMatch(id);
+        Integer id = 0;
+        doNothing().when(matchService).removeMatch(id);
         mockMvc.perform(delete("/remove-match/{id}", id))
             .andExpect(status().isNoContent())
             .andDo(print());

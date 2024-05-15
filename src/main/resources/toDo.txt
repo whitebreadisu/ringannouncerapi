@@ -5,9 +5,9 @@ tests
 - error handling for conditions like 'id not found', or can't delete wrestler b/c FK to matches
 
 #1a cleanup
-- normalize language (example... is it create?  or add?  remove or delete?)
-- match language between tests and controllers
-- models... should it be plural or singular?  Wrestlers or Wrestler?
+- DONE **normalize language (example... is it create?  or add?  remove or delete?)
+- DONE **match language between tests and controllers
+- DONE **models... should it be plural or singular?  Wrestlers or Wrestler?
 
 functions
 - add shows
@@ -29,3 +29,6 @@ parent/child spring boot db entity objects
 - create team model + teams controller(or should it be part of match creation?... 
      annotation in matchesController to create team, but NOT creation wrestler)
 
+
+??????s
+What are the new lines added to application.properties... What is hybernate ddl?  

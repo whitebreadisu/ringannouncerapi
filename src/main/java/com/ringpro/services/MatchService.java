@@ -22,7 +22,7 @@ public class MatchService {
         return matchRepository.findAll();
     }
 
-    public Match getMatches(@RequestParam(required = true) Integer id) {
+    public Match getMatch(@RequestParam(required = true) Integer id) {
         return matchRepository.findById(id).get();
     }
 
@@ -30,7 +30,7 @@ public class MatchService {
         matchRepository.deleteById(id);
     }
 
-    public Match addMatches(@RequestBody Map<String, String> body){
+    public Match addMatch(@RequestBody Map<String, String> body){
         
         Integer id = Integer.parseInt(body.get("id"));
         String matchtype = body.get("matchtype");
@@ -41,7 +41,7 @@ public class MatchService {
         return newMatch;
     }    
 
-    public  Match updateMatches(@PathVariable("id") Integer id, 
+    public  Match updateMatch(@PathVariable("id") Integer id, 
                                  @RequestBody Map<String, String> body) {
         Match matchToUpdate = matchRepository.findById(id).get();
         matchToUpdate.setMatchtype(body.get("matchtype"));

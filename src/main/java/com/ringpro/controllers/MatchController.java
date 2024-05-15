@@ -31,12 +31,12 @@ public class MatchController {
  
     @GetMapping("/get-match/{id}")
     public ResponseEntity<Match> getSingleMatch(@PathVariable("id") Integer id){
-        return new ResponseEntity<>(matchService.getMatches(id), HttpStatus.OK);
+        return new ResponseEntity<>(matchService.getMatch(id), HttpStatus.OK);
     }
 
     @PostMapping("/add-match")
-    public ResponseEntity<Match> addMatches(@RequestBody Map<String, String> body){
-        return new ResponseEntity<Match>(matchService.addMatches(body), HttpStatus.CREATED);
+    public ResponseEntity<Match> addMatch(@RequestBody Map<String, String> body){
+        return new ResponseEntity<Match>(matchService.addMatch(body), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/remove-match/{id}")
@@ -52,6 +52,6 @@ public class MatchController {
     @PutMapping("/update-match/{id}")
     public ResponseEntity<Match> updateMatches(@PathVariable("id") Integer id, 
                                  @RequestBody Map<String, String> body){
-        return new ResponseEntity<Match>(matchService.updateMatches(id, body), HttpStatus.OK);
+        return new ResponseEntity<Match>(matchService.updateMatch(id, body), HttpStatus.OK);
     }
 }
