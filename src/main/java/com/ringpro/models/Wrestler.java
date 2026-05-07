@@ -17,6 +17,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -39,6 +40,17 @@ public class Wrestler {
     @Column(name = "wrestler_notes")
     private String notes;
 
+    //------------------------------------------
+/*
+    @ManyToMany(mappedBy = "wrestlersOnTeam")
+    private Set<Team> teams = new HashSet<>();
+
+
+    public Set<Team> getTeams() {
+        return teams;
+    }
+*/
+    //------------------------------------------
 
     // constructors
     public Wrestler() {
@@ -115,6 +127,7 @@ public class Wrestler {
         return "Wrestler [id=" + id + ", name=" + name + ", moniker=" + moniker + ", location=" + location + ", weight="
                 + weight + ", notes=" + notes + "]";
     }
+
 
 
    

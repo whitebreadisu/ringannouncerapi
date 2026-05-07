@@ -17,6 +17,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinColumns;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
@@ -33,16 +34,17 @@ public class Team {
    
     private int id;
 
-    // @Column(name = "wrestlerID")
-    // private int wrestlerID;
-    // @Column(name = "matchID")
-    // private int matchID;
+    @Column(name = "wrestlerID")
+    private int wrestlerID;
+    @Column(name = "matchID")
+    private int matchID;
     @Column(name = "team")
     private int team;
 
     //----------------------------------------------------
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="matchID", referencedColumnName = "matchID")
+    @JsonIgnore
     private Match match;
 
     public Match getMatch() {
@@ -50,6 +52,25 @@ public class Team {
     }
 
     //----------------------------------------------------
+    
+    @ManyToMany
+    //@JoinTable(
+    //    name = "tbl_teams",
+        @JoinColumns(
+        {
+        @JoinColumn(updatable=false, insertable=false,name = "team"),
+        @JoinColumn(updatable=false, insertable=false,name = "matchID")
+        }
+        )
+    //    inverseJoinColumns = @JoinColumn(name = "wrestlerID")
+    //)
+    private Set<Wrestler> wrestlersOnTeam = new HashSet<>();
+
+    public Set<Wrestler> getWrestlersOnTeam() {
+        return wrestlersOnTeam;
+    }
+    
+    //-----------------------------------------------------
 
     public Team() {
     }
@@ -108,6 +129,8 @@ public class Team {
     public String toString() {
         return "Team [id=" + id + ", team=" + team + "]";
     }
+
+
 
 
 //    @Override

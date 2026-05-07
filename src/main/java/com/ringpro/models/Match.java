@@ -37,12 +37,12 @@ public class Match {
     private String fallrule;
 
 //--------------------------------------------------------
+    @OneToMany(mappedBy = "match", fetch = FetchType.LAZY)
     @JsonIgnore
-    @OneToMany(mappedBy = "match")
-    private Set<Team> teams = new HashSet<>();
+    private List<Team> teamsInMatch;
 
-    public Set<Team> getTeams() {
-        return teams;
+    public List<Team> getTeams() {
+        return teamsInMatch;
     }
 
 //--------------------------------------------------------    
